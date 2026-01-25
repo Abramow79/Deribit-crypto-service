@@ -1,0 +1,21 @@
+version: "3.9"
+services:
+  db:
+    image: postgres:15
+    environment:
+      POSTGRES_DB: crypto
+      POSTGRES_USER: crypto
+      POSTGRES_PASSWORD: crypto
+    ports:
+      - "5432:5432"
+
+  redis:
+    image: redis:7
+
+  app:
+    build: .
+    depends_on:
+      - db
+      - redis
+    ports:
+      - "8000:8000"

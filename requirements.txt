@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+sqlalchemy
+asyncpg
+aiohttp
+celery
+redis
+python-dotenv
+pytest
+pytest-asyncio
+httpx
+psycopg2-binary
+requests
