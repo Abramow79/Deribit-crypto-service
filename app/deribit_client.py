@@ -2,6 +2,7 @@ import aiohttp
 
 DERIBIT_URL = "https://www.deribit.com/api/v2/public/get_index_price"
 
+
 async def get_index_price(ticker: str) -> float:
     async with aiohttp.ClientSession() as session:
         async with session.get(

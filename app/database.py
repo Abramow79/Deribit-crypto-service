@@ -1,38 +1,25 @@
-# database.py
-""" from sqlalchemy.ext.asyncio import create_async_engine, AsyncSession
+import os
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from app.config import DATABASE_URL """
+from app.models import Base
 
-""" engine = create_async_engine(
-    DATABASE_URL,
-    echo=False,
-    future=True,
-    pool_pre_ping=True,
-    pool_size=5,
-    max_overflow=10,
-) """
 
-""" engine = create_engine(DATABASE_URL, echo=True)
+POSTGRES_USER = os.getenv("POSTGRES_USER", "postgres")
+POSTGRES_PASSWORD = os.getenv("POSTGRES_PASSWORD", "postgres")
+POSTGRES_DB = os.getenv("POSTGRES_DB", "crypto")
+POSTGRES_HOST = os.getenv("POSTGRES_HOST", "db")
+POSTGRES_PORT = os.getenv("POSTGRES_PORT", 5432)
 
-SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
-
-# фабрика сессий
-AsyncSessionLocal = sessionmaker(
-    bind=engine,
-    class_=AsyncSession,
-    expire_on_commit=False
+DATABASE_URL = (
+    f"postgresql+psycopg2://{POSTGRES_USER}:{POSTGRES_PASSWORD}"
+    f"@{POSTGRES_HOST}:{POSTGRES_PORT}/{POSTGRES_DB}"
 )
- """
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker, declarative_base
-
-#DATABASE_URL = "postgresql://user:password@localhost:5432/crypto"
-
-DATABASE_URL = "postgresql+psycopg2://postgres:postgres@localhost:5432/crypto"
 
 
-engine = create_engine(DATABASE_URL)  # синхронный движок
+engine = create_engine(DATABASE_URL, echo=True)
 SessionLocal = sessionmaker(bind=engine, autoflush=False, autocommit=False)
 
-Base = declarative_base()
+
+def init_db():
+    """Создать все таблицы из моделей"""
+    Base.metadata.create_all(bind=engine)

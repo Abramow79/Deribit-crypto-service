@@ -26,7 +26,6 @@ logger = logging.getLogger("crypto-price-service")
 TICKER_RE = re.compile(r"^[a-zA-Z0-9]{2,10}$")
 
 
-# --- Pydantic schema ---
 class PriceSchema(BaseModel):
     id: int
     ticker: str
@@ -37,7 +36,7 @@ class PriceSchema(BaseModel):
         from_attributes = True
 
 
-def get_db() -> Session:
+def get_db():
     db = SessionLocal()
     try:
         yield db

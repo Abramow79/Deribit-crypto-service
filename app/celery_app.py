@@ -1,21 +1,13 @@
-""" from celery import Celery
-from app.config import REDIS_URL
-
-celery_app = Celery(
-    "worker",
-    broker=REDIS_URL,
-    backend=REDIS_URL,
-)
- """
-
+import os
 from celery import Celery
 from celery.schedules import crontab
 
+
 celery_app = Celery(
     "crypto",
-    broker="redis://localhost:6379/0",
-    backend="redis://localhost:6379/1",
-    include=["app.tasks"]
+    broker=os.getenv("CELERY_BROKER_URL"),
+    backend=os.getenv("CELERY_RESULT_BACKEND"),
+    include=["app.tasks"],
 )
 
 celery_app.conf.beat_schedule = {
@@ -31,6 +23,5 @@ celery_app.conf.beat_schedule = {
     },
 }
 
+celery_app.conf.timezone = os.getenv("TZ", "UTC")
 celery_app.autodiscover_tasks(["app"])
-
-celery_app.conf.timezone = "UTC"

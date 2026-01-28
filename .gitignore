@@ -8,3 +8,4 @@ venv/
 .vscode/
 .gitattributes
 celerybeat-schedule.*
+first_push.sh
